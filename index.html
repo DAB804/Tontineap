@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ma Tontine</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F5F1;--surf:#fff;--ink:#14231D;--mute:#60716A;--line:#DCE4DD;--green:#0F5A43;--deep:#0A3A2C;--gold:#E8B04A;--red:#B84A33;--okbg:#DDF0E5;--nobg:#F8E3DD;--bar:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1511;--surf:#15231D;--ink:#E8F0EA;--mute:#93A89D;--line:#27382F;--green:#4FB58C;--okbg:#163629;--nobg:#3A211B;--red:#E8917A;--bar:#15231D}}
+:root[data-theme="dark"]{--bg:#0C1511;--surf:#15231D;--ink:#E8F0EA;--mute:#93A89D;--line:#27382F;--green:#4FB58C;--okbg:#163629;--nobg:#3A211B;--red:#E8917A;--bar:#15231D}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Instrument Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0;line-height:1.15}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:760px;margin:auto;padding:14px 16px 4px}
+header h1{font-size:24px}header small{color:var(--mute);font-size:13px}
+.sw{border:1px solid var(--line);background:var(--surf);color:var(--ink);padding:7px 12px;border-radius:20px;font:inherit;font-size:13px;cursor:pointer}
+main{max-width:760px;margin:auto;padding:8px 16px calc(96px + env(safe-area-inset-bottom,0px))}
+#tabs{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;background:var(--bar);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+#tabs button{flex:1;border:0;background:none;color:var(--mute);font:inherit;font-size:11px;padding:4px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+#tabs button span{font-size:20px;line-height:1.2}#tabs button.on{color:var(--green);font-weight:600}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.banner{background:var(--nobg);border-radius:10px;padding:8px 12px;font-size:14px;margin:8px 0}
+.months{display:flex;gap:6px;overflow-x:auto;padding:8px 0 12px}
+.months button{flex:none;border:1px solid var(--line);background:var(--surf);color:var(--ink);border-radius:12px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;text-align:center}
+.months button small{display:block;color:var(--mute);font-size:11px}
+.months button.on{background:var(--green);border-color:var(--green);color:#fff}.months button.on small{color:#cfe8dc}
+.hero{background:var(--deep);color:#fff;border-radius:24px;padding:20px 16px 18px;margin-bottom:14px}
+.hero h2{font-size:15px;font-weight:500;opacity:.8;text-align:center}
+.ring{display:block;width:100%;max-width:300px;margin:6px auto}
+.ring .n{fill:rgba(255,255,255,.06);stroke:rgba(255,255,255,.35);stroke-width:1.5;stroke-dasharray:3 3}
+.ring .ok{fill:#3FBF8F;stroke:#3FBF8F;stroke-dasharray:none}.ring .bn{fill:none;stroke:var(--gold);stroke-width:4}
+.ring text{text-anchor:middle;fill:#fff;font:600 12px "Instrument Sans",sans-serif}.ring .ok+text{fill:#06241B}
+.ring .big{font:700 30px "Bricolage Grotesque",sans-serif}.ring .sm{font-weight:400;opacity:.75}
+.bar{height:8px;background:rgba(255,255,255,.18);border-radius:6px;overflow:hidden;margin:10px 4px 6px}.bar i{display:block;height:100%;background:var(--gold)}
+.hero p{margin:0;text-align:center;font-size:14px;opacity:.85}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.st{background:var(--surf);border-radius:16px;padding:12px 14px;border-left:4px solid var(--green)}
+.st:nth-child(3){border-color:var(--red)}.st:nth-child(4){border-color:var(--gold)}
+.st span{color:var(--mute);font-size:13px}.st b{display:block;font:700 23px "Bricolage Grotesque",sans-serif}.st em{font-style:normal;color:var(--mute);font-size:12px}
+.box{background:var(--surf);border-radius:18px;padding:16px;margin-bottom:14px}
+.box h3{font-size:18px;margin-bottom:8px}.sub{color:var(--mute);margin:0 0 12px;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{padding:4px 11px;border-radius:14px;font-size:14px}
+.chip.ok{background:var(--okbg)}.chip.no{background:var(--nobg)}.chip.g{background:var(--gold);color:#14231D;font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}.row small{color:var(--mute);display:block}
+label.row{cursor:pointer}.ro{opacity:.9}
+input[type=checkbox]{width:24px;height:24px;accent-color:var(--green)}
+select,input[type=text],input[type=password],input[type=email],input[type=date],input[type=number],input[type=month]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;max-width:60%}
+.amt{font:700 18px "Bricolage Grotesque",sans-serif;white-space:nowrap}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.info div{background:var(--okbg);border-radius:16px;padding:14px}.info b{display:block;font:700 24px "Bricolage Grotesque",sans-serif}
+.note{border-left:4px solid var(--gold);padding:2px 0 2px 12px;margin:0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}.modal .box{width:100%;max-width:360px;margin:0}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:20px;font-size:14px;display:none;z-index:9}
+</style>
+</head>
+<body>
+<header><div><h1>Ma Tontine</h1><small id="sub"></small></div><button class="sw" id="sw" hidden></button></header>
+<main id="main"></main><nav id="tabs"></nav><div id="toast"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script>
+let AMT=300,N=8,M=8,TOT=AMT*N,START={y:2026,m:8};
+const S={vers:{},log:[],names:['Ousmane Dabo',...Array.from({length:7},(_,i)=>'Participant '+(i+2))],paid:Array.from({length:N},()=>Array(N).fill(false)),ben:Array(N).fill(null)};
+const now=new Date();
+let cur=Math.min(N-1,Math.max(0,(now.getFullYear()-2026)*12+now.getMonth()-8)),tab='dash',db=null,isAdmin=false,unlocked=false,err='',seen=0,delAsk=null,lock=null,uid=null,hasPw=false,status='load';
+function fit(){N=S.names.length;TOT=AMT*N;for(let m=0;m<M;m++){const r=S.paid[m]||[];S.paid[m]=Array.from({length:N},(_,i)=>!!r[i])}while(S.ben.length<M)S.ben.push(null);S.ben.length=M;cur=Math.min(cur,M-1)}
+const cfg=()=>({names:S.names,ben:S.ben,months:M,amt:AMT,sy:START.y,sm:START.m});
+const vs=m=>S.vers[m]||{};
+const logA=t=>{if(db&&unlocked)db.collection('log').doc('l'+Date.now()).set({t:Date.now(),txt:t}).catch(()=>{})};
+const fmtD=d=>d?new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}):'—';
+const saveV=m=>wr(db&&db.collection('vers').doc('m'+m),S.vers[m]);
+const eur=n=>n.toLocaleString('fr-FR')+' €';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mName=i=>new Date(START.y,START.m+i,1).toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+const mShort=i=>new Date(START.y,START.m+i,1).toLocaleDateString('fr-FR',{month:'short'});
+const dead=i=>new Date(START.y,START.m+i,15).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+const ini=s=>{const w=s.trim().split(/\s+/);return esc((w[0][0]+(w.length>1?w[w.length-1][0]:'')).toUpperCase())};
+const who=i=>S.ben[i]==null?'À définir':esc(S.names[S.ben[i]]);
+const cnt=m=>S.paid[m].filter(Boolean).length;
+const canTick=()=>unlocked;
+const toast=t=>{const e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2800)};
+const TABS=[['dash','📊','Accueil'],['coti','💶','Cotisations'],['vers','🎁','Versements'],['part','👥','Membres'],['hist','🕘','Historique'],['info','ℹ️','Infos']];
+const strip=()=>`<div class="months">${Array.from({length:M},(_,i)=>`<button data-m="${i}" class="${i==cur?'on':''}">${mShort(i)}<small>${cnt(i)}/${N}</small></button>`).join('')}</div>`;
+const head=(t,p,m)=>`<h2 style="font-size:26px;margin-top:10px">${t}</h2><p class="sub" style="margin-top:4px">${p}</p>${m?strip():''}`;
+function ring(m){const c=130,R=98,b=S.ben[m];let g='';
+for(let i=0;i<N;i++){const a=-Math.PI/2+i*2*Math.PI/N,x=c+R*Math.cos(a),y=c+R*Math.sin(a);
+g+=(b===i?`<circle cx="${x}" cy="${y}" r="29" class="bn"/>`:'')+`<circle cx="${x}" cy="${y}" r="22" class="n${S.paid[m][i]?' ok':''}"/><text x="${x}" y="${y}" dy=".35em">${ini(S.names[i])}</text>`}
+return `<svg class="ring" viewBox="0 0 260 260" role="img" aria-label="Cercle des participants">${g}<text x="130" y="128" class="big">${eur(cnt(m)*AMT)}</text><text x="130" y="150" class="sm">${cnt(m)} sur ${N} ont payé</text></svg>`}
+const chips=(m,v)=>S.names.map((n,i)=>S.paid[m][i]==v?`<span class="chip ${v?'ok':'no'}">${esc(n)}</span>`:'').join('')||'<span class="sub">Personne</span>';
+const V={
+dash(){const m=cur,p=cnt(m),pct=Math.round(p/N*100),ms=Array.from({length:M},(_,i)=>i),dm=ms.filter(i=>cnt(i)===N).length,col=ms.reduce((a,i)=>a+cnt(i)*AMT,0),td=new Date(),tg=new Date(td.getFullYear(),td.getMonth()+(td.getDate()>15?1:0),15),dl=Math.ceil((tg-new Date(td.getFullYear(),td.getMonth(),td.getDate()))/864e5),dist=vs(m).paid?TOT:0;
+return head('Tableau de bord','Suivi de '+mName(m)+'.',1)+
+`<div class="hero"><h2>Bénéficiaire : ${who(m)}</h2>${ring(m)}<div class="bar"><i style="width:${pct}%"></i></div><p>${pct} % collecté ce mois · objectif ${eur(TOT)}</p></div>
+<div class="box" style="border-left:4px solid var(--gold)"><h3>⏰ Rappel du 15</h3><p style="margin:0">Prochaine date limite : <b>${tg.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})}</b> (${dl===0?'aujourd’hui':dl===1?'demain':'dans '+dl+' jours'}). ${N-p} cotisation${N-p>1?'s':''} en attente pour ${mName(m)}.</p></div>
+<div class="stats"><div class="st"><span>Participants</span><b>${N}</b><em>au total</em></div><div class="st"><span>Ont cotisé</span><b>${p}</b><em>${mName(m)}</em></div><div class="st"><span>En attente</span><b>${N-p}</b><em>${mName(m)}</em></div><div class="st"><span>Mois cotisés</span><b>${dm}</b><em>tout le monde a payé</em></div><div class="st"><span>Mois restants</span><b>${M-dm}</b><em>sur ${M} mois</em></div>${unlocked?`<div class="st"><span>Cotisations encaissées</span><b>${eur(col)}</b><em>depuis le début</em></div><div class="st"><span>Reste à collecter</span><b>${eur(M*TOT-col)}</b><em>sur ${eur(M*TOT)}</em></div>`:''}<div class="st"><span>Distribué ce mois</span><b>${eur(dist)}</b><em>${vs(m).paid?'versement payé':'prévu : '+eur(TOT)}</em></div></div>
+<div class="box"><h3>Ont payé</h3><div class="chips">${chips(m,true)}</div></div><div class="box"><h3>N’ont pas encore payé</h3><div class="chips">${chips(m,false)}</div></div>`},
+coti(){const t=canTick();return head('Cotisations',t?'Cochez ceux qui ont réglé leurs '+AMT+' €.':'Consultation seule : seul l’administrateur coche les cotisations.',1)+`<div class="box">${S.names.map((n,i)=>t?`<label class="row"><span>${esc(n)}<small>${S.paid[cur][i]?'Payé':'Non payé'}</small></span><input type="checkbox" data-pay="${i}"${S.paid[cur][i]?' checked':''}></label>`:`<div class="row ro"><span>${esc(n)}</span><span class="chip ${S.paid[cur][i]?'ok':'no'}">${S.paid[cur][i]?'Payé':'Non payé'}</span></div>`).join('')}</div><p class="sub">${cnt(cur)} payé${cnt(cur)>1?'s':''} · ${N-cnt(cur)} non payé${N-cnt(cur)>1?'s':''}</p>`},
+vers(){const t=unlocked;return head('Bénéficiaires','Un bénéficiaire par mois. Un participant peut recevoir plusieurs fois si vous ajoutez des mois.')+`<div class="box">${Array.from({length:M},(_,m)=>`<div class="row"><span>${mName(m)}</span><select data-ben="${m}"><option value="">À définir</option>${S.names.map((n,i)=>`<option value="${i}"${S.ben[m]===i?' selected':''}>${esc(n)}</option>`).join('')}</select></div>`).join('')}</div>`+(t?`<div class="box"><h3>Durée de la tontine</h3><p class="sub">${M} mois actuellement. Ajoutez autant de mois que nécessaire.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sw" data-addm style="background:var(--green);color:#fff;border-color:var(--green)">Ajouter un mois</button><button class="sw" data-delm>${delAsk==='m'?'Confirmer ?':'Retirer le dernier mois'}</button></div></div>`:'<p class="sub">Ouvrez l’espace admin pour ajouter des mois.</p>')},
+part(){const t=unlocked;return head('Les participants',t?'Modifiez un nom pour remplacer ou renommer. Ajoutez ou retirez un participant.':'Seul l’administrateur peut modifier les participants : ouvrez l’espace admin.',1)+(t?'':'<button class="sw" data-open style="margin-bottom:12px;background:var(--green);color:#fff;border-color:var(--green)">🔑 Ouvrir l’espace admin pour modifier</button>')+`<div class="box">${S.names.map((n,i)=>`<div class="row"><input type="text" data-name="${i}" value="${esc(n)}"${t?'':' readonly'} style="flex:1;min-width:0;max-width:none" aria-label="Nom du participant ${i+1}"><span class="chip ${S.paid[cur][i]?'ok':'no'}">${S.paid[cur][i]?'Payé':'Non payé'}</span>${t?`<button class="sw" data-del="${i}">${delAsk===i?'Confirmer ?':'Retirer'}</button>`:''}</div>`).join('')}</div>${t?`<div class="box"><h3>Ajouter un participant (prénom et nom)</h3><p class="sub">La tontine passerait à ${N+1} participants : ${eur(AMT*(N+1))} par mois.</p><div style="display:flex;gap:8px"><input type="text" id="newname" placeholder="Prénom et nom" style="flex:1;min-width:0;max-width:none"><button class="sw" data-add style="background:var(--green);color:#fff;border-color:var(--green)">Ajouter</button></div></div>`:''}`},
+hist(){const t=unlocked;return head('Historique','Planning des bénéficiaires et statut des versements.')+`<div class="box">${Array.from({length:M},(_,i)=>{const v=vs(i);return `<div class="row" style="align-items:flex-start;flex-wrap:wrap"><div><b>${mName(i)}</b><small>Bénéficiaire prévu : ${who(i)}</small><small>Date limite : ${dead(i)}</small><small>Date de paiement : ${fmtD(v.date)}</small><small>Preuve : ${v.proof?esc(v.proof):'—'}</small></div><div style="text-align:right"><div class="amt">${eur(TOT)}</div><span class="chip ${v.paid?'ok':'no'}">${v.paid?'Payé':'En attente'}</span><small>${cnt(i)}/${N} cotisations</small></div>${t?`<div style="flex-basis:100%;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label><input type="checkbox" data-vst="${i}"${v.paid?' checked':''}> Versement payé</label><input type="date" data-vdt="${i}" value="${esc(v.date||'')}"><input type="text" data-vpr="${i}" placeholder="Preuve (référence, lien)" value="${esc(v.proof||'')}" style="flex:1;min-width:140px;max-width:none"></div>`:''}</div>`}).join('')}</div>${t?`<div class="box"><h3>Modifications de l’administrateur</h3>${S.log.length?S.log.map(l=>`<div class="row"><span>${esc(l.txt)}</span><small>${new Date(l.t).toLocaleString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</small></div>`).join(''):'<p class="sub" style="margin:0">Aucune modification enregistrée.</p>'}</div>`:''}`},
+info(){return head('Fonctionnement','Ce qu’il faut savoir.')+`<div class="info"><div><b>${AMT} €</b>Cotisation mensuelle</div><div><b>${eur(TOT)}</b>Versement mensuel</div><div><b>${N}</b>Participants</div><div><b>15</b>Date limite</div></div><div class="box"><h3>Date limite</h3><p class="note">La cotisation de <b>${AMT} €</b> doit être réglée <b>au plus tard le 15 de chaque mois.</b></p></div><div class="box"><h3>Transparence</h3><p style="margin:0">Tout le monde voit les cotisations, les bénéficiaires et l’historique. Seul l’administrateur peut cocher les cotisations.</p></div>`+(unlocked?setBox():'')}};
+// 1) Collez ici la configuration de votre projet Firebase
+const FB={apiKey:"COLLEZ_ICI",authDomain:"COLLEZ_ICI",projectId:"COLLEZ_ICI",appId:"COLLEZ_ICI"};
+const SEED={config:{names:["Ousmane Dabo","Participant 2","Participant 3","Participant 4","Participant 5","Participant 6","Participant 7","Participant 8"],ben:[null,null,null,null,null,null,null,null],months:8,amt:300,sy:2026,sm:8},
+cotis:{m0:Array(8).fill(true),m1:Array(8).fill(true),m2:Array(8).fill(true)},
+vers:{m0:{date:"2026-09-15",paid:true,proof:"Abou Diallo reçu 2400 euro"},m1:{date:"2026-10-15",paid:true,proof:"Samba Thioub"},m2:{date:"2026-11-13",paid:true,proof:"Mamadou Diallo a reçu 2400"},m3:{date:"",paid:false,proof:"Bénéficiaire Micka Diallo"}}};
+async function seed(){try{const r=db.collection('config').doc('main');if((await r.get()).exists)return;await r.set(SEED.config);for(const k in SEED.cotis)await db.collection('cotis').doc(k).set({paid:SEED.cotis[k]});for(const k in SEED.vers)await db.collection('vers').doc(k).set(SEED.vers[k])}catch(e){}}
+const lockView=()=>`<div class="modal" role="dialog" aria-modal="true"><div class="box"><h3>🔑 Connexion administrateur</h3><input type="email" id="em" placeholder="Email" autocomplete="username" style="max-width:100%;width:100%;margin-bottom:8px"><input type="password" id="pw" placeholder="Mot de passe" autocomplete="current-password" style="max-width:100%;width:100%;margin-bottom:8px"><p class="sub" style="color:var(--red);min-height:20px;margin:0 0 8px">${lock.err||''}</p><button class="sw" data-unlock style="background:var(--green);color:#fff;border-color:var(--green)">Se connecter</button> <button class="sw" data-cancel>Annuler</button></div></div>`;
+function toggleLock(){if(unlocked){firebase.auth().signOut();return}lock={};render();setTimeout(()=>{const e=document.getElementById('em');if(e)e.focus()},50)}
+async function doUnlock(){const em=document.getElementById('em').value.trim(),p=document.getElementById('pw').value;try{await firebase.auth().signInWithEmailAndPassword(em,p);lock=null}catch(e){lock={err:'Email ou mot de passe incorrect.'}}render()}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&lock&&e.target.id==='pw')doUnlock()});
+const setBox=()=>`<div class="box"><h3>⚙️ Réglages de la tontine</h3><p class="sub">Modifiez le montant, le premier mois et le nombre de mois.</p><div class="row"><span>Cotisation mensuelle (€)</span><input type="number" id="amt" min="1" value="${AMT}" style="width:110px"></div><div class="row"><span>Premier mois</span><input type="month" id="stm" value="${START.y}-${String(START.m+1).padStart(2,'0')}"></div><div class="row"><span>Nombre de mois</span><input type="number" id="nm" min="1" value="${M}" style="width:110px"></div><button class="sw" data-apply style="background:var(--green);color:#fff;border-color:var(--green);margin-top:8px">Enregistrer les réglages</button></div><div class="box"><h3>🔄 Nouvelle tontine</h3><p class="sub">Efface les cotisations, les versements et le journal. Action irréversible.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sw" data-wipe="0">${delAsk==='w0'?'Confirmer ?':'Remettre les paiements à zéro'}</button><button class="sw" data-wipe="1" style="color:var(--red)">${delAsk==='w1'?'Confirmer ?':'Tout effacer'}</button></div><p class="sub" style="margin:8px 0 0">« Remettre à zéro » garde les participants et les réglages. « Tout effacer » revient aux valeurs de départ.</p></div>`;
+function applySettings(){if(!unlocked)return;const a=+document.getElementById('amt').value,mm=document.getElementById('stm').value,n=Math.floor(+document.getElementById('nm').value);
+if(!(a>0)||!(n>=1)||!/^\d{4}-\d{2}$/.test(mm)){toast('Valeurs invalides');return}
+const old=M;AMT=a;START={y:+mm.slice(0,4),m:+mm.slice(5)-1};M=n;S.paid.splice(M);if(S.ben.length>M)S.ben.length=M;fit();
+if(db){for(let k=M;k<old;k++){db.collection('cotis').doc('m'+k).delete().catch(()=>{});db.collection('vers').doc('m'+k).delete().catch(()=>{});delete S.vers[k]}wrAll()}
+logA('Réglages : '+eur(AMT)+' par mois, '+M+' mois, début '+mName(0));render();toast('Réglages enregistrés')}
+function wipe(full){const oldM=M,ids=S.logIds||[];if(full){S.names=Array.from({length:8},(_,i)=>'Participant '+(i+1));M=8;AMT=300;START={y:now.getFullYear(),m:now.getMonth()}}
+S.paid=[];S.ben=[];S.vers={};S.log=[];cur=0;fit();
+if(db){for(let m=0;m<Math.max(oldM,M);m++){const c=db.collection('cotis').doc('m'+m);if(m<M)c.set({paid:S.paid[m]}).catch(()=>{});else c.delete().catch(()=>{});db.collection('vers').doc('m'+m).delete().catch(()=>{})}ids.forEach(id=>db.collection('log').doc(id).delete().catch(()=>{}));wr(db.collection('config').doc('main'),cfg())}
+logA(full?'Nouvelle tontine : tout a été effacé':'Paiements remis à zéro (participants conservés)')}
+function askWipe(f){if(!unlocked)return;const k='w'+f;if(delAsk!==k){delAsk=k;render();return}delAsk=null;wipe(f==='1');render();toast('Tontine réinitialisée')}
+function wrAll(){wr(db&&db.collection('config').doc('main'),cfg());if(unlocked&&db)for(let m=0;m<M;m++)wr(db.collection('cotis').doc('m'+m),{paid:S.paid[m]})}
+function addP(){const v=document.getElementById('newname').value.trim();if(!unlocked)return;if(!v){toast('Entrez un nom');return}S.names.push(v);logA('Participant ajouté : '+v);fit();wrAll();render()}
+function delP(i){if(delAsk!==i){delAsk=i;render();return}delAsk=null;if(N<=2){toast('2 participants minimum');render();return}logA('Participant retiré : '+S.names[i]);S.names.splice(i,1);S.paid.forEach(r=>r.splice(i,1));S.ben=S.ben.map(b=>b===i?null:(b>i?b-1:b));fit();wrAll();render()}
+function addM(){if(!unlocked)return;M++;logA('Mois ajouté : '+mName(M-1));fit();wrAll();render()}
+function delM(){if(delAsk!=='m'){delAsk='m';render();return}delAsk=null;if(M<=1){toast('1 mois minimum');render();return}M--;logA('Mois retiré : '+mName(M));S.paid.splice(M);delete S.vers[M];S.ben.length=M;if(db&&unlocked)db.collection('cotis').doc('m'+M).delete().catch(()=>{}),db.collection('vers').doc('m'+M).delete().catch(()=>{});fit();wrAll();render()}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='newname')addP()});
+function render(){
+const sw=document.getElementById('sw');sw.hidden=false;sw.textContent=unlocked?'🔒 Verrouiller':'🔑 Espace admin';
+document.getElementById('sub').textContent=(unlocked?'Administrateur':'Espace participant')+' · '+(status==='ok'?'données synchronisées':status==='off'?'hors ligne':'connexion…');
+document.getElementById('tabs').innerHTML=TABS.map(t=>`<button data-tab="${t[0]}" class="${t[0]===tab?'on':''}"><span>${t[1]}</span>${t[2]}</button>`).join('');
+const msg=status==='off'?'<div class="banner">Connexion à la base de données impossible. Vérifiez votre connexion ou la configuration Firebase.</div>':'';
+document.getElementById('main').innerHTML=(lock?lockView():'')+msg+(err?'<div class="banner">'+esc(err)+'</div>':'')+(unlocked&&status==='ok'&&!isAdmin?'<div class="banner">Ce compte n’est pas propriétaire de la page : les cotisations ne seront pas enregistrées.</div>':'')+V[tab]();}
+const busy=()=>/INPUT|SELECT/.test((document.activeElement||{}).tagName||'');
+const rr=()=>{if(!busy())render()};
+const wr=(ref,data)=>{if(!db||!ref){err='Enregistrement indisponible.';render();return}ref.set(data).then(()=>{if(err){err='';render()}toast('Enregistré ✓')}).catch(x=>{err='Enregistrement refusé'+(x&&x.code?' ('+x.code+')':'')+'. Reconnectez-vous en administrateur.';render()})};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]'),m=e.target.closest('[data-m]');
+if(t){tab=t.dataset.tab;delAsk=null;render();scrollTo(0,0)}else if(m){cur=+m.dataset.m;render()}else if(e.target.closest('[data-open]')){toggleLock()}else if(e.target.closest('[data-apply]')){applySettings()}else if(e.target.closest('[data-wipe]')){askWipe(e.target.closest('[data-wipe]').dataset.wipe)}else if(e.target.closest('[data-addm]')){addM()}else if(e.target.closest('[data-delm]')){delM()}else if(e.target.closest('[data-add]')){addP()}else if(e.target.closest('[data-del]')){delP(+e.target.closest('[data-del]').dataset.del)}else if(e.target.closest('#sw')){toggleLock()}else if(e.target.closest('[data-cancel]')){lock=null;render()}else if(e.target.closest('[data-unlock]')){doUnlock()}});
+document.addEventListener('change',e=>{const d=e.target.dataset,v=e.target.value,cf=()=>wr(db&&db.collection('config').doc('main'),cfg()),vx=m=>S.vers[m]=Object.assign({},S.vers[m]);
+if(d.pay!==undefined&&canTick()){const i=+d.pay;S.paid[cur][i]=e.target.checked;wr(db&&db.collection('cotis').doc('m'+cur),{paid:S.paid[cur]});logA('Cotisation de '+S.names[i]+(e.target.checked?' enregistrée':' annulée')+' ('+mName(cur)+')')}
+else if(d.ben!==undefined){const m=+d.ben;S.ben[m]=v===''?null:+v;cf();logA('Bénéficiaire de '+mName(m)+' : '+(v===''?'à définir':S.names[+v]))}
+else if(d.name!==undefined&&unlocked){const i=+d.name,o=S.names[i];S.names[i]=v.trim()||o;cf();if(S.names[i]!==o)logA('Nom modifié : '+o+' → '+S.names[i])}
+else if(d.vst!==undefined&&unlocked){const m=+d.vst,x=vx(m);x.paid=e.target.checked;if(x.paid&&!x.date)x.date=new Date().toISOString().slice(0,10);saveV(m);logA('Versement de '+mName(m)+' marqué '+(x.paid?'payé':'en attente'))}
+else if(d.vdt!==undefined&&unlocked){const m=+d.vdt,x=vx(m);x.date=v;saveV(m);logA('Date de paiement de '+mName(m)+' : '+fmtD(v))}
+else if(d.vpr!==undefined&&unlocked){const m=+d.vpr,x=vx(m);x.proof=v.trim();saveV(m);logA('Preuve de paiement de '+mName(m)+' mise à jour')}
+else return;if(d.name!==undefined||d.vdt!==undefined||d.vpr!==undefined)return;render()});
+render();
+(async()=>{try{
+firebase.initializeApp(FB);db=firebase.firestore();status='ok';
+firebase.auth().onAuthStateChanged(u=>{unlocked=!!u;isAdmin=!!u;if(u)seed();render()});
+db.collection('config').doc('main').onSnapshot(s=>{const d=s.exists&&s.data();if(d){if(d.names)S.names=d.names;if(d.ben)S.ben=d.ben;M=d.months||S.names.length;if(d.amt)AMT=d.amt;if(d.sy!=null)START={y:d.sy,m:d.sm};if(!seen){seen=1;cur=Math.max(0,Math.min(M-1,(now.getFullYear()-START.y)*12+now.getMonth()-START.m))}fit()}rr()});
+db.collection('cotis').onSnapshot(q=>{q.docs.forEach(x=>{const k=+x.id.slice(1),d=x.data();if(d&&d.paid&&k>=0&&k<2000)S.paid[k]=d.paid});fit();rr()});
+render();
+db.collection('vers').onSnapshot(q=>{q.docs.forEach(x=>{S.vers[+x.id.slice(1)]=x.data()});rr()});
+db.collection('log').onSnapshot(q=>{S.logIds=q.docs.map(x=>x.id);S.log=q.docs.map(x=>x.data()).filter(x=>x&&x.t).sort((a,b)=>b.t-a.t).slice(0,40);rr()});
+}catch(e){status='off';render()}})();
+</script>
+</body>
+</html>
